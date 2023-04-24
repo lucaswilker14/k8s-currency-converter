@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: producer-dp
+  namespace: currency-converter-ns
+  labels:
+    app: producer
+    tier: producer-api
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: producer-pod
+      labels:
+        app: producer
+        tier: producer-api
+    spec:
+      containers:
+        - name: producer-container
+          image: lucaswilker14/currency-converter-producer
+          ports:
+            - containerPort: 8082
+              name: spring-api
+          env:
+            - name: RDS_CACHE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: cache
+                  name: redis-cm
+            - name: RDS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: host
+                  name: redis-cm
+            - name: RDS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: port
+                  name: redis-cm
+            - name: RDS_TTL
+              valueFrom:
+                configMapKeyRef:
+                  key: ttl
+                  name: redis-cm
+
+            - name: RMQ_HOST
+              valueFrom:
+                configMapKeyRef:
+                  key: host
+                  name: rabbitmq-cm
+            - name: RMQ_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: port
+                  name: rabbitmq-cm
+            - name: RMQ_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: default-user
+                  name: rabbitmq-cm
+            - name: RMQ_PASS
+              valueFrom:
+                configMapKeyRef:
+                  key: default-pass
+                  name: rabbitmq-cm
+  selector:
+    matchLabels:
+      app: producer
+      tier: producer-api

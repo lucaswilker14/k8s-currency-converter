@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-dp
+  namespace: currency-converter-ns
+  labels:
+    app: redis
+    tier: cache
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: redis-pod
+      labels:
+        app: redis
+        tier: cache
+    spec:
+      containers:
+        - name: redis-container
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+  selector:
+    matchLabels:
+      app: redis
+      tier: cache

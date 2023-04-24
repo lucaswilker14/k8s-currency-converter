@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: rabbitmq-cm
+  namespace: currency-converter-ns
+data:
+  host: "rabbitmq-svc.currency-converter-ns.svc.cluster.local" # To connect to the pod/host, follow the patterns: <service-name.namespace.svc.cluster.local>
+  port: "5672"
+  default-user: "admin"
+  default-pass: "admin"
