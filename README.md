@@ -48,7 +48,7 @@ kubectl create -f services/ --save-config
 
 6. Get service api URL
 ```
-minikube service producer-svc --url -n assembly-voter-ns
+minikube service producer-svc --url -n currency-converter-ns
 ```
 7. Enjoy (:
 
